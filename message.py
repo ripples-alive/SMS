@@ -29,8 +29,14 @@ class FetionMessage(Message):
 
         # Create web with the class type specified in config.
         config = ConfigParser.ConfigParser()
-        config.read('config.ini')
-        self._web = WebFactory.create_web(config.get('Web', 'class type'))
+        try:
+            config.read('config.ini')
+            web_cls_type = config.get('Web', 'class type')
+        except Exception, error:
+            print(error)
+            print('Use UrllibWeb as default web class.')
+            web_cls_type = 'urllib'
+        self._web = WebFactory.create_web(web_cls_type)
 
         # Set base URL of wap fetion.
         self._base_url = 'http://f.10086.cn'
@@ -52,6 +58,18 @@ class FetionMessage(Message):
 
     def _logout(self):
         """Logout fetion."""
+        # In order to logout, we need to delete the cookie named 'cell_cookie'.
+        # But it's not a good idea to visit the protected member of a class.
+        try:
+            import urllib2
+            web_handlers = self._web._opener.handlers
+            for handler in web_handlers:
+                if isinstance(handler, urllib2.HTTPCookieProcessor):
+                    del handler.cookiejar._cookies['f.10086.cn']['/']['cell_cookie']
+        except Exception, error:
+            print(error)
+            print('Delete cookie failed!')
+
         url = self._base_url + '/im5/login/login.action?type=logout'
         self._web.open(url)
 
@@ -82,8 +100,13 @@ class FetionMessage(Message):
             result = self._web.open(url, data)
 
         # Analyse JSON returned and get the user id.
-        result_dic = json.loads(result)
-        return result_dic['userinfo']['idUser']
+        try:
+            result_dic = json.loads(result)
+            return result_dic['userinfo']['idUser']
+        except Exception, error:
+            print(error)
+            print('Get user id failed!')
+            return ''
 
     def send_to_self(self, msg):
         """Send message to the user self."""
@@ -97,7 +120,11 @@ class FetionMessage(Message):
         else:
             user_id_list = [str(self._get_user_id(one_tel)) for one_tel in to_tel]
             data = {'msg': msg, 'touserid': ','.join(user_id_list)}
-        self._web.open(url, data)
+        result = self._web.open(url, data)
+        try:
+            return json.loads(result)
+        except Exception, error:
+            print(error)
 
 
 class ShortFetionMessage(FetionMessage):
