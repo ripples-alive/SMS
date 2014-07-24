@@ -8,13 +8,13 @@ import urllib2
 import cookielib
 
 
-class Web(object):
+class _Web(object):
     """Abstract class to open URLs with cookie."""
     def open(self, url, data=None, method='POST'):
         """Return string from the specified URL."""
 
 
-class UrllibWeb(Web):
+class UrllibWeb(_Web):
     """Class to open URLs with cookie by urllib2."""
     def __init__(self):
         """Init opener with cookie processor."""

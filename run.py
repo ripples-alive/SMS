@@ -8,6 +8,7 @@ import getpass
 
 from message_factory import MessageFactory
 
+
 config = ConfigParser.ConfigParser()
 config.read('config.ini')
 msg_cls_type = config.get('Message', 'class type')

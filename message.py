@@ -9,7 +9,7 @@ import json
 from web_factory import WebFactory
 
 
-class Message(object):
+class _Message(object):
     """Class to send message."""
     def __init__(self, from_tel, password):
         """Init message sender with specific username and password."""
@@ -21,11 +21,11 @@ class Message(object):
         """Send message."""
 
 
-class FetionMessage(Message):
+class _FetionMessage(_Message):
     """Class to send message by fetion."""
     def __init__(self, from_tel, password):
         """Init fetion with specific username and password."""
-        super(FetionMessage, self).__init__(from_tel, password)
+        super(_FetionMessage, self).__init__(from_tel, password)
 
         # Create web with the class type specified in config.
         config = ConfigParser.ConfigParser()
@@ -127,7 +127,7 @@ class FetionMessage(Message):
             print(error)
 
 
-class ShortFetionMessage(FetionMessage):
+class ShortFetionMessage(_FetionMessage):
     """Class to send message by fetion.
     Login before send message and logout when finish sending.
     """
@@ -147,7 +147,7 @@ class ShortFetionMessage(FetionMessage):
         self._logout()
 
 
-class LongFetionMessage(FetionMessage):
+class LongFetionMessage(_FetionMessage):
     """Class to send message by fetion.
     Login when created and logout when destroy.
     """
