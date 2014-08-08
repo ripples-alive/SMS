@@ -21,7 +21,7 @@ class UrllibWeb(_Web):
         try:
             cj = cookielib.CookieJar()
             self._opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
-            self._opener.addheaders = [('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.146 Safari/537.36 QQBrowser/2.4.2181.400')]
+            # self._opener.addheaders = [('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.146 Safari/537.36 QQBrowser/2.4.2181.400')]
         except Exception, error:
             print(error)
 
