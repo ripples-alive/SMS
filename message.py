@@ -110,7 +110,7 @@ class _FetionMessage(_Message):
 
     def send_to_self(self, msg):
         """Send message to the user self."""
-        self.send(msg, self._from_tel)
+        return self.send(msg, self._from_tel)
 
     def send(self, msg, to_tel):
         """Send message."""
@@ -142,9 +142,11 @@ class ShortFetionMessage(_FetionMessage):
         """Send message to others."""
         self._login(self._from_tel, self.__password)
 
-        super(ShortFetionMessage, self).send(msg, to_tel)
+        ret = super(ShortFetionMessage, self).send(msg, to_tel)
 
         self._logout()
+
+        return ret
 
 
 class LongFetionMessage(_FetionMessage):
