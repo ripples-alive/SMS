@@ -125,6 +125,7 @@ class _FetionMessage(_Message):
             return json.loads(result)
         except Exception, error:
             print(error)
+            return {'sendCode': -1, 'info': u'发送失败！'}
 
 
 class ShortFetionMessage(_FetionMessage):
